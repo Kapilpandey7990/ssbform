@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Information Questionnaire (PIQ)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #000;
+            line-height: 1.4;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            width: 800px;
+            background: #fff;
+            margin: 0 auto;
+            padding: 40px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            position: relative;
+        }
+        .header-area {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        .header-top {
+            text-align: right;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .main-title {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .oir-box {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            border: 1px solid #000;
+            width: 50px;
+            height: 35px;
+            text-align: center;
+        }
+        .oir-label {
+            position: absolute;
+            right: 60px;
+            top: 25px;
+            font-weight: bold;
+        }
+        
+        /* Keeps sections and tables together cleanly during printing */
+        .section-block, table, .flex-row {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            vertical-align: top;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            background: transparent;
+        }
+        input[type="text"]:focus {
+            background-color: #faffbd;
+        }
+
+        td textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            background: transparent;
+            resize: none;
+            rows: 1;
+            overflow: hidden;
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+        td textarea:focus {
+            background-color: #faffbd;
+        }
+        
+        .bold-label {
+            font-weight: bold;
+        }
+        .flex-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        .section-desc {
+            margin-bottom: 8px;
+        }
+        .table-btn-container {
+            margin-top: -10px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        
+        .action-bar {
+            width: 800px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-flex: end;
+        }
+        
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-success {
+            background-color: #28a745;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .signature-area {
+            margin-top: 20px;
+            text-align: right;
+            float: right;
+            width: 130px;
+            page-break-inside: avoid;
+        }
+        .signature-box {
+            width: 110px;
+            height: 60px;
+            border: 1px solid #ccc;
+            margin: 0 auto 5px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: #fafafa;
+            overflow: hidden;
+        }
+        .signature-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .image-placeholder-text {
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+            pointer-events: none;
+            font-style: italic;
+        }
+        .file-input-wrapper {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+        .file-label {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 2px 6px;
+            font-size: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        
+        @media print {
+            body {
+                background-color: #fff;
+                margin: 0;
+            }
+            .form-container {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+            .table-btn-container, .action-bar, .file-input-wrapper {
+                display: none !important;
+            }
+            td textarea {
+                background: transparent !important;
+            }
+            .signature-box {
+                border: 1px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="action-bar">
+    <button type="button" class="btn btn-success" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<form action="#" method="post">
+    <div class="form-container clearfix">
+        
+        <div class="header-area">
+            <div class="header-top">DIPR Questionnaire No. 107-A (Revised-2023)</div>
+            <div class="oir-label">O.I.R.</div>
+            <div class="oir-box"></div>
+            <div class="main-title">PERSONAL INFORMATION QUESTIONNAIRE</div>
+        </div>
+
+        <!-- Table 1 -->
+        <table>
+            <tr>
+                <td style="width: 25%;"><span class="bold-label">1. Selection Board<br>(No. & Place)</span></td>
+                <td style="width: 25%;"><span class="bold-label">Batch No. & Entry</span></td>
+                <td style="width: 15%;"><span class="bold-label">Chest No.</span></td>
+                <td style="width: 35%;"><span class="bold-label">UPSC/ Other Roll No.</span></td>
+            </tr>
+            <tr>
+                <td><textarea name="selection_board" oninput="autoExpand(this)">ALLAHABAD</textarea></td>
+                <td><textarea name="batch_entry" oninput="autoExpand(this)">35908 - Short Service Commission NCC (Spl) Entry Men</textarea></td>
+                <td><textarea name="chest_no" oninput="autoExpand(this)"></textarea></td>
+                <td><textarea name="roll_no" oninput="autoExpand(this)">SSC (NCC SPL ENTRY)-124/803939</textarea></td>
+            </tr>
+        </table>
+
+        <!-- Basic Details Row 2 to 5 -->
+        <div class="flex-row">
+            <div style="width: 45%;"><span class="bold-label">2. Candidate Name</span></div>
+            <div style="width: 55%;"><input type="text" name="candidate_name" value="Pratham Prabhakar"></div>
+        </div>
+        
+        <div class="flex-row">
+            <div style="width: 45%;"><span class="bold-label">3. Father/Guardian Name</span></div>
+            <div style="width: 55%;"><input type="text" name="father_name" value="Manoj Kumar"></div>
+        </div>
+
+        <div class="flex-row">
+            <div style="width: 45%;"><span class="bold-label">4. Mother's Name</span></div>
+            <div style="width: 55%;"><input type="text" name="mother_name" value="Ritu Prabhakar"></div>
+        </div>
+
+        <div class="flex-row" style="align-items: flex-start;">
+            <div style="width: 45%;"><span class="bold-label">5. (a) Place of Present Residence (District & State) with approximate population of place)</span></div>
+            <div style="width: 55%;">
+                <input type="text" name="present_residence" value="ambala cantt,Ambala ,Haryana" style="margin-bottom: 4px;">
+                <input type="text" name="present_pop" value="2100000">
+            </div>
+        </div>
+
+        <div class="flex-row" style="align-items: flex-start;">
+            <div style="width: 45%;"><span class="bold-label">(b) Place of Permanent Residence (District & state)<br>(With Approximate population of place)</span></div>
+            <div style="width: 55%;">
+                <input type="text" name="perm_residence" value="ambala cantt,Ambala ,Haryana" style="margin-bottom: 4px;">
+                <input type="text" name="perm_pop" value="300000">
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div style="width: 45%;"><span class="bold-label">&nbsp;&nbsp;&nbsp;&nbsp;(whether District HQ or not ?):</span></div>
+            <div style="width: 55%;"><input type="text" name="dist_hq" value="Yes"></div>
+        </div>
+
+        <div class="flex-row" style="align-items: flex-start;">
+            <div style="width: 45%;"><span class="bold-label">(c) Place of Maximum Residence(Place, District & State)<br>&nbsp;&nbsp;&nbsp;&nbsp;With approximate population of place)</span></div>
+            <div style="width: 55%;">
+                <input type="text" name="max_residence" value="Darjipura-Vadodara,Gujarat," style="margin-bottom: 4px;">
+                <input type="text" name="max_pop" value="2100000">
+            </div>
+        </div>
+
+        <!-- Section 6 Table -->
+        <div class="section-desc"><span class="bold-label">6. Fill in the details below:</span></div>
+        <table>
+            <tr>
+                <td class="bold-label">State & District</td>
+                <td class="bold-label">Religion</td>
+                <td class="bold-label">Whether SC/ST/OBC</td>
+                <td class="bold-label">Mother Tongue</td>
+                <td class="bold-label">Date of Birth</td>
+                <td class="bold-label">Marital Status</td>
+            </tr>
+            <tr>
+                <td><textarea name="state_dist_6" oninput="autoExpand(this)">Ambala , Haryana</textarea></td>
+                <td><textarea name="religion_6" oninput="autoExpand(this)">Hindu</textarea></td>
+                <td><textarea name="category_6" oninput="autoExpand(this)">General</textarea></td>
+                <td><textarea name="m_tongue_6" oninput="autoExpand(this)">Hindi</textarea></td>
+                <td><textarea name="dob_6" oninput="autoExpand(this)">09-10-2002</textarea></td>
+                <td><textarea name="marital_6" oninput="autoExpand(this)">Unmarried</textarea></td>
+            </tr>
+        </table>
+
+        <!-- Section 7 Details -->
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">7. (a) Marital Relationship of Parents</span></div>
+            <div style="width: 45%;"><input type="text" name="parents_marital" value="Staying Together"></div>
+        </div>
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">&nbsp;&nbsp;&nbsp;&nbsp;(b) Your age at time of Separation/Divorce</span></div>
+            <div style="width: 45%;"><input type="text" name="age_sep" value="NA"></div>
+        </div>
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">&nbsp;&nbsp;&nbsp;&nbsp;(c) Staying with?</span></div>
+            <div style="width: 45%;"><input type="text" name="staying_with" value="NA"></div>
+        </div>
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">&nbsp;&nbsp;&nbsp;&nbsp;(d) Parents alive?</span></div>
+            <div style="width: 45%;">
+                <span style="display:inline-block; width:100px;">Father : Yes</span> 
+                <span>Mother:Yes</span>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">&nbsp;&nbsp;&nbsp;&nbsp;(e) if not alive, your age at time of Mother's/Father's Death.</span></div>
+            <div style="width: 45%;">
+                <span style="display:inline-block; width:100px;">Father :NA</span> 
+                <span>Mother:NA</span>
+            </div>
+        </div>
+
+        <!-- Section 7(f) Table -->
+        <div class="section-desc"><span class="bold-label">(f) Parent's/Guardian's and Siblings' Occupation/Income (as Applicable)</span></div>
+        <table id="table-7f">
+            <thead>
+                <tr>
+                    <td class="bold-label" style="width: 25%;">Particulars</td>
+                    <td class="bold-label" style="width: 25%;">Education</td>
+                    <td class="bold-label" style="width: 30%;">Occupation</td>
+                    <td class="bold-label" style="width: 20%;">Income per Month</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><textarea name="part_7f[]" oninput="autoExpand(this)">Father</textarea></td>
+                    <td><textarea name="edu_7f[]" oninput="autoExpand(this)">BA GRADUATE</textarea></td>
+                    <td><textarea name="occ_7f[]" oninput="autoExpand(this)">HAL electrical fitter Jaguar division</textarea></td>
+                    <td><textarea name="inc_7f[]" oninput="autoExpand(this)">100000.00</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="part_7f[]" oninput="autoExpand(this)">Mother</textarea></td>
+                    <td><textarea name="edu_7f[]" oninput="autoExpand(this)">BA GRADUATE</textarea></td>
+                    <td><textarea name="occ_7f[]" oninput="autoExpand(this)">Home maker</textarea></td>
+                    <td><textarea name="inc_7f[]" oninput="autoExpand(this)">0.00</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="part_7f[]" oninput="autoExpand(this)">Younger Sister 1</textarea></td>
+                    <td><textarea name="edu_7f[]" oninput="autoExpand(this)">Tenth class</textarea></td>
+                    <td><textarea name="occ_7f[]" oninput="autoExpand(this)">Student</textarea></td>
+                    <td><textarea name="inc_7f[]" oninput="autoExpand(this)">0.00</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-btn-container">
+            <button type="button" class="btn" onclick="addRow('table-7f')">+ Add Row</button>
+            <button type="button" class="btn btn-danger" onclick="removeRow('table-7f')">- Remove Row</button>
+        </div>
+
+        <!-- Section 8 Table -->
+        <div class="section-desc"><span class="bold-label">8. Educational Record (Commencing from Matriculation/Equivalent Examination)</span></div>
+        <table id="table-8">
+            <thead>
+                <tr>
+                    <td class="bold-label" style="width: 12%;">Qualification acquired</td>
+                    <td class="bold-label" style="width: 10%;">Stream</td>
+                    <td class="bold-label" style="width: 20%;">Full Name of Institute</td>
+                    <td class="bold-label" style="width: 10%;">Board/University</td>
+                    <td class="bold-label" style="width: 8%;">Year</td>
+                    <td class="bold-label" style="width: 12%;">Div & Marks %</td>
+                    <td class="bold-label" style="width: 10%;">Medium of Instruction</td>
+                    <td class="bold-label" style="width: 10%;">Boarder/ Day Scholar</td>
+                    <td class="bold-label" style="width: 8%;">Outstanding Achievement</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><textarea name="qual_8[]" oninput="autoExpand(this)">Matric</textarea></td>
+                    <td><textarea name="stream_8[]" oninput="autoExpand(this)">General</textarea></td>
+                    <td><textarea name="inst_8[]" oninput="autoExpand(this)">Kendriya Vidyalaya Darjipura Vadodara</textarea></td>
+                    <td><textarea name="board_8[]" oninput="autoExpand(this)">Cbse</textarea></td>
+                    <td><textarea name="year_8[]" oninput="autoExpand(this)">2018</textarea></td>
+                    <td><textarea name="marks_8[]" oninput="autoExpand(this)">First 74.00</textarea></td>
+                    <td><textarea name="med_8[]" oninput="autoExpand(this)">English</textarea></td>
+                    <td><textarea name="sch_8[]" oninput="autoExpand(this)">Day Scholar</textarea></td>
+                    <td><textarea name="ach_8[]" oninput="autoExpand(this)">Nil</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="qual_8[]" oninput="autoExpand(this)">10+2</textarea></td>
+                    <td><textarea name="stream_8[]" oninput="autoExpand(this)">Science Non Med</textarea></td>
+                    <td><textarea name="inst_8[]" oninput="autoExpand(this)">Kendriya Vidyalaya Harni</textarea></td>
+                    <td><textarea name="board_8[]" oninput="autoExpand(this)">Cbse</textarea></td>
+                    <td><textarea name="year_8[]" oninput="autoExpand(this)">2020</textarea></td>
+                    <td><textarea name="marks_8[]" oninput="autoExpand(this)">First 67.00</textarea></td>
+                    <td><textarea name="med_8[]" oninput="autoExpand(this)">English</textarea></td>
+                    <td><textarea name="sch_8[]" oninput="autoExpand(this)">Day Scholar</textarea></td>
+                    <td><textarea name="ach_8[]" oninput="autoExpand(this)">Nil</textarea></td>
+                </tr>
+                <!-- Integrated the graduation row directly into the main table to avoid broken segments -->
+                <tr>
+                    <td class="bold-label">Graduation (All graduation degree other than B.E /B.Tech & B.Arch)</td>
+                    <td><textarea name="qual_8[]" oninput="autoExpand(this)">Bsc Mathematics Hons</textarea></td>
+                    <td><textarea name="inst_8[]" oninput="autoExpand(this)">The Maharaja Sayajirao University</textarea></td>
+                    <td><textarea name="board_8[]" oninput="autoExpand(this)">University</textarea></td>
+                    <td><textarea name="year_8[]" oninput="autoExpand(this)">2023</textarea></td>
+                    <td><textarea name="marks_8[]" oninput="autoExpand(this)">First 68.00</textarea></td>
+                    <td><textarea name="med_8[]" oninput="autoExpand(this)">English</textarea></td>
+                    <td><textarea name="sch_8[]" oninput="autoExpand(this)">Boarder</textarea></td>
+                    <td><textarea name="ach_8[]" oninput="autoExpand(this)">Nil</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-btn-container">
+            <button type="button" class="btn" onclick="addRow('table-8')">+ Add Row</button>
+            <button type="button" class="btn btn-danger" onclick="removeRow('table-8')">- Remove Row</button>
+        </div>
+
+        <!-- Section 9 -->
+        <table style="border: none; margin-bottom: 20px;">
+            <tr style="border: none;">
+                <td style="border: none; width: 33%;"><span class="bold-label">9. Age (Years & Months)</span><br><br><input type="text" name="age_val" value="23.6"></td>
+                <td style="border: none; width: 33%;"><span class="bold-label">Height (in cm)</span><br><br><input type="text" name="height_val" value="183"></td>
+                <td style="border: none; width: 33%;"><span class="bold-label">Weight (in Kilogram)</span><br><br><input type="text" name="weight_val" value="80"></td>
+            </tr>
+        </table>
+
+        <!-- Section 10 -->
+        <div class="section-desc"><span class="bold-label">10. Present and Past Occupation and personal monthly income</span></div>
+        <div class="flex-row" style="margin-bottom: 5px;">
+            <div style="width: 25%; padding-left: 20px;"><span class="bold-label">Present</span></div>
+            <div style="width: 45%; font-style: italic;"><input type="text" name="present_occ" value="Free Lancer Event Management"></div>
+            <div style="width: 30%; font-style: italic;"><input type="text" name="present_inc" value="Rs 15000"></div>
+        </div>
+        <div class="flex-row" style="margin-bottom: 15px;">
+            <div style="width: 25%; padding-left: 20px;"><span class="bold-label">Past</span></div>
+            <div style="width: 45%; font-style: italic;"><input type="text" name="past_occ" value=""></div>
+            <div style="width: 30%; font-style: italic;"><input type="text" name="past_inc" value="Rs"></div>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="flex-row">
+            <div style="width: 50%;"><span class="bold-label">11. (a) NCC Training</span></div>
+            <div style="width: 50%;"><input type="text" name="ncc_training" value="Yes"></div>
+        </div>
+        
+        <div class="section-desc" style="padding-left: 20px;"><span class="bold-label">(b) If Yes, Total Training (Give details below):</span></div>
+        <table id="table-11b">
+            <thead>
+                <tr>
+                    <td class="bold-label" style="width: 25%;">Total Training</td>
+                    <td class="bold-label" style="width: 25%;">Wing</td>
+                    <td class="bold-label" style="width: 25%;">Division</td>
+                    <td class="bold-label" style="width: 25%;">Certificate Obtained</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><textarea name="ncc_tot[]" oninput="autoExpand(this)">36 Months</textarea></td>
+                    <td><textarea name="ncc_wing[]" oninput="autoExpand(this)">Airforce</textarea></td>
+                    <td><textarea name="ncc_div[]" oninput="autoExpand(this)">Senior_division</textarea></td>
+                    <td><textarea name="ncc_cert[]" oninput="autoExpand(this)">C</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-btn-container">
+            <button type="button" class="btn" onclick="addRow('table-11b')">+ Add Row</button>
+            <button type="button" class="btn btn-danger" onclick="removeRow('table-11b')">- Remove Row</button>
+        </div>
+
+        <!-- Section 12 (a) -->
+        <div class="section-desc"><span class="bold-label">12. (a) Participation in Games and Sports</span></div>
+        <table id="table-12a">
+            <thead>
+                <tr>
+                    <td class="bold-label" style="width: 25%;">Games/Sports</td>
+                    <td class="bold-label" style="width: 25%;">Duration of Participation</td>
+                    <td class="bold-label" style="width: 25%;">Represented School/ College/University/other</td>
+                    <td class="bold-label" style="width: 25%;">Outstanding Achievement</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><textarea name="sport_name[]" oninput="autoExpand(this)">Badminton</textarea></td>
+                    <td><textarea name="sport_dur[]" oninput="autoExpand(this)">2016-till date</textarea></td>
+                    <td><textarea name="sport_rep[]" oninput="autoExpand(this)">Gujarat Nationals</textarea></td>
+                    <td><textarea name="sport_ach[]" oninput="autoExpand(this)">Participated</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="sport_name[]" oninput="autoExpand(this)">Volleyball</textarea></td>
+                    <td><textarea name="sport_dur[]" oninput="autoExpand(this)">2018-till date</textarea></td>
+                    <td><textarea name="sport_rep[]" oninput="autoExpand(this)">College</textarea></td>
+                    <td><textarea name="sport_ach[]" oninput="autoExpand(this)">Gold Medal</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="sport_name[]" oninput="autoExpand(this)">Snap Shooting</textarea></td>
+                    <td><textarea name="sport_dur[]" oninput="autoExpand(this)">2022</textarea></td>
+                    <td><textarea name="sport_rep[]" oninput="autoExpand(this)">1 Guj Air Sqn</textarea></td>
+                    <td><textarea name="sport_ach[]" oninput="autoExpand(this)">First In Igc</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-btn-container">
+            <button type="button" class="btn" onclick="addRow('table-12a')">+ Add Row</button>
+            <button type="button" class="btn btn-danger" onclick="removeRow('table-12a')">- Remove Row</button>
+        </div>
+
+        <!-- Section 12 (b) & (c) -->
+        <div class="flex-row">
+            <div style="width: 30%;"><span class="bold-label">(b) Hobbies/Interest</span></div>
+            <div style="width: 70%;"><input type="text" name="hobbies" value="Cooking, Running, Travelling"></div>
+        </div>
+
+        <div class="section-desc"><span class="bold-label">(c) Participation in Extra Curricular Activities</span></div>
+        <table id="table-12c">
+            <thead>
+                <tr>
+                    <td class="bold-label" style="width: 40%;">Name of Activity Group</td>
+                    <td class="bold-label" style="width: 30%;">Duration of Participation</td>
+                    <td class="bold-label" style="width: 30%;">Outstanding Achievement</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><textarea name="eca_name[]" oninput="autoExpand(this)">Blood Donation</textarea></td>
+                    <td><textarea name="eca_dur[]" oninput="autoExpand(this)">2022-till date</textarea></td>
+                    <td><textarea name="eca_ach[]" oninput="autoExpand(this)">Participated</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="eca_name[]" oninput="autoExpand(this)">Punjabi Throttlers Bike Group</textarea></td>
+                    <td><textarea name="eca_dur[]" oninput="autoExpand(this)">2023-till date</textarea></td>
+                    <td><textarea name="eca_ach[]" oninput="autoExpand(this)">Participated</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="eca_name[]" oninput="autoExpand(this)">Debate Competition</textarea></td>
+                    <td><textarea name="eca_dur[]" oninput="autoExpand(this)">2023</textarea></td>
+                    <td><textarea name="eca_ach[]" oninput="autoExpand(this)">Silver Medal</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-btn-container">
+            <button type="button" class="btn" onclick="addRow('table-12c')">+ Add Row</button>
+            <button type="button" class="btn btn-danger" onclick="removeRow('table-12c')">- Remove Row</button>
+        </div>
+
+        <!-- Section 12 (d) -->
+        <div class="flex-row" style="align-items: flex-start;">
+            <div style="width: 55%;"><span class="bold-label">(d) Position of responsibility held in NCC/Scouting/ Sports and Extra - curricular activities and other fields</span></div>
+            <div style="width: 45%; text-align: left;">
+                <input type="text" name="pos_resp1" value="Volleyball Team Captain, Tent" style="margin-bottom:4px;">
+                <input type="text" name="pos_resp2" value="Pitching Commander.">
+            </div>
+        </div>
+
+        <!-- Section 13 -->
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">13. (a) Nature of Commission:</span></div>
+            <div style="width: 45%;"><input type="text" name="nature_comm" value="Short Service Commission"></div>
+        </div>
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">&nbsp;&nbsp;&nbsp;&nbsp;(b) Choice of Services:</span></div>
+            <div style="width: 45%;"><input type="text" name="choice_service" value="Indian Army"></div>
+        </div>
+
+        <!-- Section 14 -->
+        <div class="flex-row">
+            <div style="width: 55%;"><span class="bold-label">14. Number of chances availed for commission in all Four Services.</span></div>
+            <div style="width: 45%;"><input type="text" name="chances_availed" value="8"></div>
+        </div>
+
+        <!-- Section 15 Table -->
+        <div class="section-desc"><span class="bold-label">15. Detail of all previous interviews, if any (Army/Navy/Air Force/Coast Guard Selection Boards)</span></div>
+        <table id="table-15">
+            <thead>
+                <tr>
+                    <td class="bold-label" style="width:6%;">Sr No</td>
+                    <td class="bold-label" style="width:22%;">Roll No</td>
+                    <td class="bold-label" style="width:17%;">Centre</td>
+                    <td class="bold-label" style="width:17%;">SSB/Batch</td>
+                    <td class="bold-label" style="width:23%;">Date</td>
+                    <td class="bold-label" style="width:15%;">Recommended/ Not Recommended</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><textarea name="sr_15[]" oninput="autoExpand(this)">1</textarea></td>
+                    <td><textarea name="roll_15[]" oninput="autoExpand(this)">SSC(NCC)-56/810626</textarea></td>
+                    <td><textarea name="centre_15[]" oninput="autoExpand(this)">ALLAHABAD</textarea></td>
+                    <td><textarea name="batch_15[]" oninput="autoExpand(this)">19 SSB(E)/39789</textarea></td>
+                    <td><textarea name="date_15[]" oninput="autoExpand(this)">01-06-2024 - 05-06-2024</textarea></td>
+                    <td><textarea name="rec_15[]" oninput="autoExpand(this)">Stage-I Not 'R'</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="sr_15[]" oninput="autoExpand(this)">2</textarea></td>
+                    <td><textarea name="roll_15[]" oninput="autoExpand(this)">SSC(NCC)-57/800818</textarea></td>
+                    <td><textarea name="centre_15[]" oninput="autoExpand(this)">BHOPAL</textarea></td>
+                    <td><textarea name="batch_15[]" oninput="autoExpand(this)">20 SSB(C)/40813</textarea></td>
+                    <td><textarea name="date_15[]" oninput="autoExpand(this)">12-12-2024 - 16-12-2024</textarea></td>
+                    <td><textarea name="rec_15[]" oninput="autoExpand(this)">Stage-I Not 'R'</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="sr_15[]" oninput="autoExpand(this)">3</textarea></td>
+                    <td><textarea name="roll_15[]" oninput="autoExpand(this)">SSC(NCC)-58/802602</textarea></td>
+                    <td><textarea name="centre_15[]" oninput="autoExpand(this)">Jalandhar</textarea></td>
+                    <td><textarea name="batch_15[]" oninput="autoExpand(this)">31 SSB(N)/81447</textarea></td>
+                    <td><textarea name="date_15[]" oninput="autoExpand(this)">26-05-2025 - 30-05-2025</textarea></td>
+                    <td><textarea name="rec_15[]" oninput="autoExpand(this)">Stage-II Not 'R'</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="sr_15[]" oninput="autoExpand(this)">4</textarea></td>
+                    <td><textarea name="roll_15[]" oninput="autoExpand(this)">SSC(NCC)-123/800038</textarea></td>
+                    <td><textarea name="centre_15[]" oninput="autoExpand(this)">Bengaluru</textarea></td>
+                    <td><textarea name="batch_15[]" oninput="autoExpand(this)">17 SSB(S)/63763</textarea></td>
+                    <td><textarea name="date_15[]" oninput="autoExpand(this)">26-12-2025 - 30-12-2025</textarea></td>
+                    <td><textarea name="rec_15[]" oninput="autoExpand(this)">Stage-I Not 'R'</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-btn-container">
+            <button type="button" class="btn" onclick="addRow('table-15')">+ Add Row</button>
+            <button type="button" class="btn btn-danger" onclick="removeRow('table-15')">- Remove Row</button>
+        </div>
+
+        <p style="font-size: 13px; margin-top: 30px;">*This is certify that all the personal information given above by me is correct and true*</p>
+
+        <!-- Signature & Image Upload Section -->
+        <div class="signature-area">
+            <div class="file-input-wrapper">
+                <label for="sig-upload" class="file-label">Choose Image</label>
+                <input type="file" id="sig-upload" accept="image/*" onchange="previewImage(this)">
+            </div>
+            <div class="signature-box" id="sig-box">
+                <span class="image-placeholder-text">Click Above to Add Image</span>
+            </div>
+            <div class="bold-label" style="text-align: center;">Candidate Signature</div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function previewImage(input) {
+        var box = document.getElementById('sig-box');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                box.innerHTML = '<img src="' + e.target.result + '" alt="Signature / Photo">';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function autoExpand(element) {
+        element.style.height = 'auto';
+        element.style.height = element.scrollHeight + 'px';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('td textarea').forEach(el => {
+            autoExpand(el);
+        });
+    });
+
+    function addRow(tableId) {
+        var table = document.getElementById(tableId);
+        var body = table.getElementsByTagName('tbody')[0];
+        var referenceRow = body ? body.rows[0] : table.rows[1];
+        
+        if (!referenceRow && table.rows.length > 0) {
+            referenceRow = table.rows[0];
+        }
+
+        if (referenceRow) {
+            var newRow = referenceRow.cloneNode(true);
+            var textareas = newRow.getElementsByTagName('textarea');
+            for (var i = 0; i < textareas.length; i++) {
+                if(tableId === 'table-15' && i === 0){
+                     var lastRowIdx = (body ? body.rows.length : table.rows.length) + 1;
+                     textareas[i].value = lastRowIdx;
+                } else {
+                     textareas[i].value = '';
+                }
+                textareas[i].style.height = 'auto';
+            }
+            
+            if (body) {
+                body.appendChild(newRow);
+            } else {
+                table.appendChild(newRow);
+            }
+        }
+    }
+
+    function removeRow(tableId) {
+        var table = document.getElementById(tableId);
+        var body = table.getElementsByTagName('tbody')[0];
+        var rows = body ? body.rows : table.rows;
+        var minimumCount = body ? 1 : 2; 
+        
+        if (rows.length > minimumCount) {
+            if(body) {
+                body.removeChild(rows[rows.length - 1]);
+            } else {
+                table.removeChild(rows[rows.length - 1]);
+            }
+        } else {
+            alert("Cannot delete the final layout entry row.");
+        }
+    }
+</script>
+
+</body>
+</html>
